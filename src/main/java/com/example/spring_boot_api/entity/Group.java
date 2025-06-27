@@ -1,43 +1,25 @@
 package com.example.spring_boot_api.entity;
 
-import org.hibernate.annotations.SQLRestriction;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
+@Table(name = "groups")
+@JsonIgnoreProperties({ "hibernateLazyInitializer" })
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLRestriction("is_deleted <> 1")
-public class User {
+public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String employeeNumber;
     private String name;
-    @OneToOne
-    @JoinColumn(name = "department_id")
-    private Department department;
-    @OneToOne
-    @JoinColumn(name = "group_id")
-   
-    private Group group;
-    @OneToOne
-    @JoinColumn(name = "position_id")
-    private Position position;
 }
-
-

@@ -9,6 +9,7 @@ import com.example.spring_boot_api.request.UserRequest;
 import com.example.spring_boot_api.response.ErrorResponse;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
@@ -24,26 +25,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
 
    private final UserRepository userRepository;
-   public UserController(UserRepository userRepository) {
-       this.userRepository = userRepository;
-   }
 
    @GetMapping
-   public List<User> getAll() {
-       return userRepository.findAll();
-   }
+    public List<User> getAll(@RequestParam(value = "name", required = false) String name) {
+        if (name != null) {
+            return userRepository.findByNameContaining(name);
+        }
+        return userRepository.findByOrderByIdDesc();
+    }
 
    @GetMapping("/{id}")
     public User findById(@PathVariable("id") Integer id) {
-        return userRepository.findById(id)
+        return userRepository.findByIdOriginal(id)
                 .orElseThrow(() -> new NotFoundException(id + " is not found."));
     }
 
